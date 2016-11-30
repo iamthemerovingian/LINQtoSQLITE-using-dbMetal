@@ -10,7 +10,7 @@ namespace SampleLINQtoSQLITE
     {
         static void Main(string[] args)
         {
-            TestDatabaseContext dbContext = new TestDatabaseContext("DbLinqProvider=Sqlite;" + @"Data Source=Databasdfase\Custom.db" + "DbLinqConnectionType=System.Data.SQLite.SQLiteConnection, System.Data.SQLite, Version=1.0.103.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139");
+            TestDatabaseContext dbContext = new TestDatabaseContext("DbLinqProvider=Sqlite;" + @"Data Source=Database\Custom.db" + "DbLinqConnectionType=System.Data.SQLite.SQLiteConnection, System.Data.SQLite, Version=1.0.103.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139");
 
             List<Person> list = GetPeopleList(dbContext);
             PrintAllPeople(list);
@@ -32,7 +32,7 @@ namespace SampleLINQtoSQLITE
 
         private static void PrintAllPeople(List<Person> list)
         {
-            Console.WriteLine("all the people!!");
+            Console.WriteLine("All the people!!");
 
             foreach (var item in list)
             {
@@ -48,19 +48,27 @@ namespace SampleLINQtoSQLITE
 
         private static void PrintAllCompanies(IQueryable<Company> q2)
         {
-            Console.WriteLine("Company with 1 employee and 1 manager!");
-
+            Console.WriteLine("Here are the companies!");
             foreach (var item in q2.AsEnumerable())
             {
-                Console.WriteLine($"Company Employee: {item.EmployeeID} Company Manaeger: {item.ManagerID}");
+                Console.WriteLine($"CompanyID: {item.CompanyID}");
+                Console.WriteLine($"Company Employee: {item.EmployeeID} Company Manager: {item.ManagerID}");
             }
         }
 
         private static void CreateNewCompany(TestDatabaseContext dbcon)
         {
             Company company = new Company();
-            company.EmployeeID = 1;
-            company.ManagerID = 5;
+            var matchedEmployee = (from a in dbcon.GetTable<Employee>()
+                                   where a.EmployeeID == 4
+                                   select a).SingleOrDefault();
+
+            var matchedManager = (from a in dbcon.GetTable<Manager>()
+                                   where a.ManagerRank == "Big Boss"
+                                   select a).SingleOrDefault();
+
+            company.EmployeeID = matchedEmployee.EmployeeID;
+            company.ManagerID = matchedManager.ManagerID;
             dbcon.Company.InsertOnSubmit(company);
             dbcon.SubmitChanges();
         }
