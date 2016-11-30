@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<Database xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="main" Class="Main" BaseType="DbLinq.Data.Linq.DataContext" Provider="Sqlite" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Table Name="main.Company" Member="Company">
+    <Type Name="Company">
+      <Column Name="CompanyID" Member="CompanyID" Storage="_companyID" Type="System.Int32" DbType="INTEGER" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="EmployeeID" Member="EmployeeID" Storage="_employeeID" Type="System.Int32" DbType="INTEGER" IsPrimaryKey="false" IsDbGenerated="false" CanBeNull="false" />
+      <Column Name="ManagerID" Member="ManagerID" Storage="_managerID" Type="System.Int32" DbType="INTEGER" IsPrimaryKey="false" IsDbGenerated="false" CanBeNull="false" />
+      <Association Name="fk_Company_0" Member="Manager" Storage="_manager" Type="Manager" ThisKey="ManagerID" OtherKey="ManagerID" IsForeignKey="true" />
+      <Association Name="fk_Company_1" Member="Employee" Storage="_employee" Type="Employee" ThisKey="EmployeeID" OtherKey="EmployeeID" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="main.Manager" Member="Manager">
+    <Type Name="Manager">
+      <Column Name="Manager_ID" Member="ManagerID" Storage="_managerID" Type="System.Int32" DbType="INTEGER" IsPrimaryKey="false" IsDbGenerated="false" CanBeNull="false" />
+      <Column Name="Manager_Rank" Member="ManagerRank" Storage="_managerRank" Type="System.String" DbType="VARCHAR" IsPrimaryKey="false" IsDbGenerated="false" CanBeNull="false" />
+      <Association Name="fk_Company_0" Member="Company" Storage="_company" Type="Company" ThisKey="ManagerID" OtherKey="ManagerID" DeleteRule="NO ACTION" />
+      <Association Name="fk_Manager_0" Member="Person" Storage="_person" Type="Person" ThisKey="ManagerID" OtherKey="PersonID" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="main.employee" Member="Employee">
+    <Type Name="Employee">
+      <Column Name="employee_id" Member="EmployeeID" Storage="_employeeID" Type="System.Int32" DbType="INTEGER" IsPrimaryKey="false" IsDbGenerated="false" CanBeNull="false" />
+      <Column Name="employee_rank" Member="EmployeeRank" Storage="_employeeRank" Type="System.String" DbType="VARCHAR" IsPrimaryKey="false" IsDbGenerated="false" CanBeNull="false" />
+      <Column Name="employee_house_id" Member="EmployeeHouseID" Storage="_employeeHouseID" Type="System.Int32" DbType="INTEGER" IsPrimaryKey="false" IsDbGenerated="false" CanBeNull="false" />
+      <Association Name="fk_Company_1" Member="Company" Storage="_company" Type="Company" ThisKey="EmployeeID" OtherKey="EmployeeID" DeleteRule="NO ACTION" />
+      <Association Name="fk_employee_0" Member="Person" Storage="_person" Type="Person" ThisKey="EmployeeHouseID" OtherKey="PersonHouseID" IsForeignKey="true" />
+      <Association Name="fk_employee_1" Member="Person1" Storage="_person1" Type="Person" ThisKey="EmployeeID" OtherKey="PersonID" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="main.person" Member="Person">
+    <Type Name="Person">
+      <Column Name="person_id" Member="PersonID" Storage="_personID" Type="System.Int32" DbType="INTEGER" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="person_name" Member="PersonName" Storage="_personName" Type="System.String" DbType="VARCHAR" IsPrimaryKey="false" IsDbGenerated="false" CanBeNull="false" />
+      <Column Name="person_HouseID" Member="PersonHouseID" Storage="_personHouseID" Type="System.Int32" DbType="INTEGER" IsPrimaryKey="false" IsDbGenerated="false" CanBeNull="false" />
+      <Association Name="fk_Manager_0" Member="Manager" Storage="_manager" Type="Manager" ThisKey="PersonID" OtherKey="ManagerID" DeleteRule="NO ACTION" />
+      <Association Name="fk_employee_0" Member="Employee" Storage="_employee" Type="Employee" ThisKey="PersonHouseID" OtherKey="EmployeeHouseID" DeleteRule="NO ACTION" />
+      <Association Name="fk_employee_1" Member="Employee1" Storage="_employee1" Type="Employee" ThisKey="PersonID" OtherKey="EmployeeID" DeleteRule="NO ACTION" />
+    </Type>
+  </Table>
+</Database>
