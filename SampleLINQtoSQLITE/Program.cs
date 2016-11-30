@@ -21,56 +21,56 @@ namespace SampleLINQtoSQLITE
             PrintAllCompanies(query2);
         }
 
-        private static List<Person> GetPeopleList(TestDatabaseContext dbcon)
+        private static List<Person> GetPeopleList(TestDatabaseContext dbContext)
         {
-            var q = from a in dbcon.GetTable<Person>()
+            var q = from a in dbContext.GetTable<Person>()
                     select a;
 
             var list = q.ToList();
             return list;
         }
 
-        private static void PrintAllPeople(List<Person> list)
+        private static void PrintAllPeople(List<Person> people)
         {
             Console.WriteLine("All the people!!");
 
-            foreach (var item in list)
+            foreach (var item in people)
             {
                 Console.WriteLine(item.PersonName);
             }
         }
 
-        private static IQueryable<Company> SelectAllCompanies(TestDatabaseContext dbcon)
+        private static IQueryable<Company> SelectAllCompanies(TestDatabaseContext dbContext)
         {
-            return from a in dbcon.GetTable<Company>()
+            return from a in dbContext.GetTable<Company>()
                    select a;
         }
 
-        private static void PrintAllCompanies(IQueryable<Company> q2)
+        private static void PrintAllCompanies(IQueryable<Company> companies)
         {
             Console.WriteLine("Here are the companies!");
-            foreach (var item in q2.AsEnumerable())
+            foreach (var item in companies.AsEnumerable())
             {
                 Console.WriteLine($"CompanyID: {item.CompanyID}");
                 Console.WriteLine($"Company Employee: {item.EmployeeID} Company Manager: {item.ManagerID}");
             }
         }
 
-        private static void CreateNewCompany(TestDatabaseContext dbcon)
+        private static void CreateNewCompany(TestDatabaseContext dbContext)
         {
             Company company = new Company();
-            var matchedEmployee = (from a in dbcon.GetTable<Employee>()
+            var matchedEmployee = (from a in dbContext.GetTable<Employee>()
                                    where a.EmployeeID == 4
                                    select a).SingleOrDefault();
 
-            var matchedManager = (from a in dbcon.GetTable<Manager>()
+            var matchedManager = (from a in dbContext.GetTable<Manager>()
                                    where a.ManagerRank == "Big Boss"
                                    select a).SingleOrDefault();
 
             company.EmployeeID = matchedEmployee.EmployeeID;
             company.ManagerID = matchedManager.ManagerID;
-            dbcon.Company.InsertOnSubmit(company);
-            dbcon.SubmitChanges();
+            dbContext.Company.InsertOnSubmit(company);
+            dbContext.SubmitChanges();
         }
     }
 }
