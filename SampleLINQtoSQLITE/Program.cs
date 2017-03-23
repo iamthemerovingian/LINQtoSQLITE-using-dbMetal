@@ -10,7 +10,8 @@ namespace SampleLINQtoSQLITE
     {
         static void Main(string[] args)
         {
-            TestDatabaseContext dbContext = new TestDatabaseContext("DbLinqProvider=Sqlite;" + @"Data Source=Database\Custom.db" + "DbLinqConnectionType=System.Data.SQLite.SQLiteConnection, System.Data.SQLite, Version=1.0.103.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139");
+            //This is the dbconnection onject.
+            TestDatabaseContext dbContext = new TestDatabaseContext("DbLinqProvider=Sqlite;" + @"Data Source=Database\Custom.db DbLinqConnectionType=System.Data.SQLite.SQLiteConnection, System.Data.SQLite, Version=1.0.103.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139");
 
             List<Person> list = GetPeopleList(dbContext);
             PrintAllPeople(list);
@@ -21,6 +22,11 @@ namespace SampleLINQtoSQLITE
             PrintAllCompanies(query2);
         }
 
+        /// <summary>
+        /// This method will fetch the entire Person Table using LINQ.
+        /// </summary>
+        /// <param name="dbContext"> Is the parameter for the dbConnection</param>
+        /// <returns></returns>
         private static List<Person> GetPeopleList(TestDatabaseContext dbContext)
         {
             var q = from a in dbContext.GetTable<Person>()
@@ -30,6 +36,10 @@ namespace SampleLINQtoSQLITE
             return list;
         }
 
+        /// <summary>
+        /// Prints all the people in the DB to the console.
+        /// </summary>
+        /// <param name="people"></param>
         private static void PrintAllPeople(List<Person> people)
         {
             Console.WriteLine("All the people!!");
@@ -46,6 +56,10 @@ namespace SampleLINQtoSQLITE
                    select a;
         }
 
+        /// <summary>
+        /// This method simply prints the Employee ID and the ID for each company.
+        /// </summary>
+        /// <param name="companies"></param>
         private static void PrintAllCompanies(IQueryable<Company> companies)
         {
             Console.WriteLine("Here are the companies!");
@@ -56,6 +70,11 @@ namespace SampleLINQtoSQLITE
             }
         }
 
+        /// <summary>
+        /// This method will first fetch an employee and a manager and add them to the company.
+        /// Then finally insert the new company into the SQLITE db.
+        /// </summary>
+        /// <param name="dbContext"></param>
         private static void CreateNewCompany(TestDatabaseContext dbContext)
         {
             Company company = new Company();
